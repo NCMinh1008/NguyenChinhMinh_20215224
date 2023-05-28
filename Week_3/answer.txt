@@ -1,8 +1,0 @@
-Is JAVA a Pass by Value or a Pass by Reference programming language?
-Java is a pass-by-value programming language. When passing arguments to methods in Java, the values of the arguments are copied and passed to the method. This means that changes made to the parameters within the method do not affect the original variables in the calling code.
-
-However, it's important to note that in the case of objects, the value being passed is actually a reference to the object in memory. This can sometimes lead to confusion and the misconception that Java is pass-by-reference. But in reality, the reference itself is passed by value.
-
-When an object reference is passed as an argument to a method, a copy of the reference is made and passed to the method. This means that the method can access and modify the state of the object that the reference points to, but it cannot modify the original reference itself. Any changes made to the object's state within the method will be visible to the calling code since both the method and the calling code have a reference to the same object in memory.
-
-To summarize, Java is pass-by-value, but for objects, the value being passed is a copy of the reference to the object.

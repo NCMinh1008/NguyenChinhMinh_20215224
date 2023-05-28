@@ -1,49 +1,41 @@
 package hust.soict.globalict.aims.store;
-import hust.soict.globalict.aims.disc.DigitalVideoDisc;
+import hust.soict.globalict.aims.media.*;
+import java.util.ArrayList;
 
 public class Store {
-	private DigitalVideoDisc itemsInStore[];
-	private int itemCount=0;
-
-    public Store(int capacity) {
-        itemsInStore = new DigitalVideoDisc[capacity];
-        itemCount = 0;
+	private ArrayList<Media> itemsInStore;
+	public Store() {
+        itemsInStore = new ArrayList<>();
     }
 
-    public void addDVD(DigitalVideoDisc dvd) {
-        if (itemCount >= itemsInStore.length) {
-            System.out.println("The store is full. Cannot add more DVDs.");
-            return;
-        }
-
-        itemsInStore[itemCount] = dvd;
-        itemCount++;
-        System.out.println("DVD added to the store.");
+	public void addMedia(Media media) {
+		itemsInStore.add(media);
+        System.out.println("Added " + media.getTitle() + " to the cart.");
     }
 
-    public void removeDVD(DigitalVideoDisc dvd) {
-        int index = findDVDIndex(dvd);
-        if (index == -1) {
-            System.out.println("DVD not found in the store.");
-            return;
+    public void removeMedia(Media media) {
+        if (itemsInStore.remove(media)) {
+            System.out.println("Removed " + media.getTitle() + " from the cart.");
+        } else {
+            System.out.println(media.getTitle() + " is not found in the cart.");
         }
-
-        // Shift remaining DVDs to fill the gap
-        for (int i = index; i < itemCount - 1; i++) {
-            itemsInStore[i] = itemsInStore[i + 1];
-        }
-
-        itemsInStore[itemCount - 1] = null;
-        itemCount--;
-        System.out.println("DVD removed from the store.");
     }
 
-    private int findDVDIndex(DigitalVideoDisc dvd) {
-        for (int i = 0; i < itemCount; i++) {
-            if (itemsInStore[i].equals(dvd)) {
-                return i;
+    public Media findMediaByTitle(String title) {
+        for (Media media : itemsInStore) {
+            if (media.getTitle().equals(title)) {
+                return media;
             }
         }
-        return -1;
+        return null;
     }
+
+    public void displayStoreItems() {
+        System.out.println("Store Items:");
+        for (Media media : itemsInStore) {
+            System.out.println(media);
+        }
+    }
+
+
 }

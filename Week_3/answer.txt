@@ -1,0 +1,47 @@
+QUESTION: Alternatively, to compare items in the cart, instead of using Comparator, we can use the Comparable interface and override the compareTo()method. You can refer to the Java docs to see the information of this interface.
+Suppose we are taking this Comparable interface approach. 
+What class should implement the Comparable interface? 
+In those classes, how should you implement the compareTo()method be to reflect the ordering that we want? 
+Can we have two ordering rules of the item (by title then cost and by cost then title) if we use this Comparable interface approach? 
+Suppose the DVDs has a different ordering rule from the other media types, that is by title, then decreasing length, then cost. How would you modify your code to allow this? 
+
+ANSWER:
+If we are using the Comparable interface approach to compare items in the cart, the class representing the items in the cart should implement the Comparable interface.
+To implement the compareTo() method in the class, you need to define the ordering based on the properties of the items that you want to compare. The compareTo() method should return a negative integer, zero, or a positive integer based on whether the current object is less than, equal to, or greater than the specified object, respectively.
+If you want to have two ordering rules for the items (by title then cost and by cost then title), you cannot achieve this directly using the Comparable interface. The Comparable interface allows you to define only a single natural ordering for the objects.
+However, you can create separate Comparator implementations for each ordering rule and use them as needed to compare the items in the cart. Comparator interface provides a more flexible approach for defining multiple ordering rules.
+If the DVDs have a different ordering rule from the other media types (by title, then decreasing length, then cost), you can create a separate class that represents DVDs and implement the Comparable interface in that class. The compareTo() method in the DVD class should be implemented to reflect the desired ordering based on title, decreasing length, and cost.
+Here's how you can modify your code to allow this:
+public class Item implements Comparable<Item> {
+    private String title;
+    private double cost;
+
+    // constructors, getters, setters, etc.
+
+    @Override
+    public int compareTo(Item other) {
+        return this.title.compareTo(other.title); // Compare by title
+    }
+}
+
+public class DVD extends Item {
+    private int length;
+
+    // constructors, getters, setters, etc.
+
+    @Override
+    public int compareTo(Item other) {
+        if (other instanceof DVD) {
+            DVD otherDVD = (DVD) other;
+            int titleComparison = this.title.compareTo(otherDVD.title);
+            if (titleComparison != 0) {
+                return titleComparison; // Compare by title
+            }
+            int lengthComparison = Integer.compare(otherDVD.length, this.length);
+            if (lengthComparison != 0) {
+                return lengthComparison; // Compare by decreasing length
+            }
+        }
+        return Double.compare(this.cost, other.cost); // Compare by cost if not a DVD or equal title and length
+    }
+}
